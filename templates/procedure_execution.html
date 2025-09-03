@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Procedure Execution</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/heart-icon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/heart-icon.png') }}" alt="Heart Icon">
+            <h1>Fabricio's CathPed</h1>
+        </div>
+        <div class="nav">
+            <button onclick="window.location.href='/'">Home</button>
+            <button onclick="window.location.href='/listpatient'">List of patients</button>
+        </div>
+    </header>
+
+    <div class="case-evaluation-container">
+        <h2>Procedure Execution - {{ patient.patient_full_name }}</h2>
+
+        <form method="POST">
+            <div class="question-container">
+                <label class="question-text" for="execution_date">Data da Realização:</label>
+                <input type="date" id="execution_date" name="execution_date">
+            </div>
+
+            <div class="question-container">
+                <label class="question-text" for="medical_report">Laudo Médico:</label>
+                <textarea type="textarea" id="medical_report" name="medical_report"></textarea>
+            </div>
+
+            <div class="question-container">
+                <label class="question-text">Paciente Informado?</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="patient_informed" value="Sim"> Sim</label>
+                    <label><input type="checkbox" name="patient_informed" value="Não"> Não</label>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <label class="question-text">Complicações Anteriores?</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="previous_complications_procedure" value="Sim"> Sim</label>
+                    <label><input type="checkbox" name="previous_complications_procedure" value="Não"> Não</label>
+                </div>
+            </div>
+
+            <div class="save">
+                <button type="submit">Salvar</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>

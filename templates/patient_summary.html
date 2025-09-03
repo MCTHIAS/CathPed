@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Summary</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/heart-icon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1{
+            color: white;
+        }
+
+        .container {
+            width: 210mm;
+            max-width: 210mm;
+            min-height: 297mm; 
+            padding: 15px;
+            background: white;
+            color: #333;
+            margin: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            text-align: left;
+            font-size: 12px; 
+        }
+
+        h1 {
+            font-size: 19px;
+            text-align: center;
+            color: #101728;
+        }
+
+        h2 {
+            font-size: 16px;
+            color: #101728;
+            margin-top: 10px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 5px;
+        }
+
+        p {
+            font-size: 14px;
+            line-height: 1.3;
+            margin: 3px 0;
+        }
+
+        .btn-print {
+            display: inline-block;
+            background-color: #101728;
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+
+        .btn-print:hover {
+            background: linear-gradient(90deg, #101728, #000000);
+        }
+
+        @media print {
+            .btn-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/heart-icon.png') }}" alt="Heart Icon">
+            <h1>Fabricio's CathPed</h1>
+        </div>
+        <div class="nav">
+            <button onclick="window.location.href='/'">Home</button>
+            <button onclick="window.location.href='/listpatient'">List of patients</button>
+        </div>
+    </header>
+
+    <div class="container" id="pdf-content">
+        <h1>Patient Summary</h1>
+
+        <h2>Informações Básicas</h2>
+        <p><strong>Nome:</strong> {{ patient.patient_full_name }}</p>
+        <p><strong>Idade:</strong> {{ patient.patient_age }}</p>
+        <p><strong>Contato:</strong> {{ patient.patient_contact }}</p>
+        <p><strong>Data de Encaminhamento:</strong> {{ patient.referral_date.strftime('%d/%m/%Y') }}</p>
+        <p><strong>Tipo de Internação:</strong> {{ patient.internment_type }}</p>
+        <p><strong>Localização:</strong> {{ patient.location }}</p>
+        <p><strong>Procedimento:</strong> {{ patient.procedure }}</p>
+        <p><strong>Diagnóstico:</strong> {{ patient.diagnosis }}</p>
+        <p><strong>Gravidade da Condição:</strong> {{ patient.condition_severity }}</p>
+
+        {% if patient.case_evaluation %}
+            <h2>Avaliação do Caso</h2>
+            <p><strong>Data da Avaliação:</strong> {{ patient.case_evaluation.evaluation_date.strftime('%d/%m/%Y') }}</p>
+            <p><strong>Diagnóstico Secundário:</strong> {{ patient.case_evaluation.diagnosis_2 }}</p>
+            <p><strong>Gravidade:</strong> {{ patient.case_evaluation.severity }}</p>
+            <p><strong>Procedimento Solicitado:</strong> {{ patient.case_evaluation.procedure_requested }}</p>
+            <p><strong>Solicitante:</strong> {{ patient.case_evaluation.requester }}</p>
+            <p><strong>Necessidade de OPME:</strong> {{ "Sim" if patient.case_evaluation.opme_needed else "Não" }}</p>
+            <p><strong>OPME Especial:</strong> {{ "Sim" if patient.case_evaluation.special_opme else "Não" }}</p>
+            <p><strong>Complicações Anteriores:</strong> {{ "Sim" if patient.case_evaluation.previous_complications else "Não" }}</p>
+        {% endif %}
+
+        {% if patient.authorization %}
+            <h2>Autorização e Agendamento</h2>
+            <p><strong>Autorização OPME:</strong> {{ "Sim" if patient.authorization.opme_authorization else "Não" }}</p>
+            <p><strong>Data de Agendamento:</strong> {{ patient.authorization.scheduling_date.strftime('%d/%m/%Y') if patient.authorization.scheduling_date else "N/A" }}</p>
+            <p><strong>Data de Execução:</strong> {{ patient.authorization.execution_date.strftime('%d/%m/%Y') if patient.authorization.execution_date else "N/A" }}</p>
+            <p><strong>Horário de Execução:</strong> {{ patient.authorization.execution_time.strftime('%H:%M') if patient.authorization.execution_time else "N/A" }}</p>
+            <p><strong>Motivo do Cancelamento:</strong> {{ patient.authorization.cancellation_reason or "N/A" }}</p>
+        {% endif %}
+
+        {% if patient.procedure_execution %}
+            <h2>Realização do Procedimento</h2>
+            <p><strong>Data de Execução:</strong> {{ patient.procedure_execution.execution_date.strftime('%d/%m/%Y') }}</p>
+            <p><strong>Relatório Médico:</strong> {{ patient.procedure_execution.medical_report }}</p>
+            <p><strong>Paciente Informado:</strong> {{ "Sim" if patient.procedure_execution.patient_informed else "Não" }}</p>
+            <p><strong>Complicações Anteriores:</strong> {{ "Sim" if patient.procedure_execution.previous_complications else "Não" }}</p>
+        {% endif %}
+
+        {% if patient.follow_up %}
+            <h2>Acompanhamento Pós-Procedimento</h2>
+            <p><strong>Complicações Pós-Procedimento:</strong> {{ "Sim" if patient.follow_up.post_procedure_complications else "Não" }}</p>
+        {% endif %}
+    </div>
+
+    <button class="btn-print" onclick="generatePDF()">Generate PDF</button>
+
+    <script>
+
+        async function generatePDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'p',
+                unit: 'mm',
+                format: 'a4'
+            });
+
+            const element = document.getElementById('pdf-content');
+
+            const canvas = await html2canvas(element, {
+                scale: 3, 
+                useCORS: true
+            });
+
+            const imgData = canvas.toDataURL('image/png');
+
+            const imgWidth = 210;
+            const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+            doc.addImage(imgData, 'PNG', 0, 0, imgWidth, imgHeight);
+            doc.save('resumo_paciente.pdf');
+        }
+    </script>
+
+</body>
+</html>

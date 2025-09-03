@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authorization / Scheduling</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/heart-icon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <img src="{{ url_for('static', filename='images/heart-icon.png') }}" alt="Heart Icon">
+            <h1>Fabricio's CathPed</h1>
+        </div>
+        <div class="nav">
+            <button onclick="window.location.href='/'">Home</button>
+            <button onclick="window.location.href='/listpatient'">List of patients</button>
+        </div>
+    </header>
+
+    <div class="case-evaluation-container">
+        <h2>Authorization / Scheduling - {{ patient.patient_full_name }}</h2>
+
+        <form method="POST">
+            <div class="question-container">
+                <label class="question-text">OPME Autorizado?</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" name="opme_authorization" value="Sim"> Sim</label>
+                    <label><input type="checkbox" name="opme_authorization" value="Não"> Não</label>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <label class="question-text" for="scheduling_date">Data de Agendamento:</label>
+                <input type="date" id="scheduling_date" name="scheduling_date">
+            </div>
+
+            <div class="question-container">
+                <label class="question-text" for="execution_date">Data da Realização:</label>
+                <input type="date" id="execution_date" name="execution_date">
+            </div>
+
+            <div class="question-container">
+                <label class="question-text" for="execution_time">Hora da Realização:</label>
+                <input type="time" id="execution_time" name="execution_time">
+            </div>
+
+            <div class="question-container">
+                <label class="question-text" for="cancellation_reason">Motivo do Cancelamento (se houver):</label>
+                <input type="text" id="cancellation_reason" name="cancellation_reason"></input>
+            </div>
+
+            <div class="save">
+                <button type="submit">Save</button>
+            </div>
+        </form>
+
+    </div>
+
+</body>
+</html>

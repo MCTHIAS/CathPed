@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Evaluation</title>
+    <link rel="icon" href="{{ url_for('static', filename='images/heart-icon.png') }}" type="image/x-icon">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+          <img src="{{ url_for('static', filename='images/heart-icon.png') }}" alt="Heart Icon">
+          <h1>Fabricio's CathPed</h1>
+        </div>
+        <div class="nav">
+            <button onclick="window.location.href='/'">Home</button>
+            <button onclick="window.location.href='/listpatient'">List of patients</button>
+        </div>
+
+    </header>
+
+    
+    <div class="case-evaluation-container">
+        <h2>Case Evaluation - {{ patient.patient_full_name }}</h2>
+        <form method="POST">
+            <div class="question-container">
+                <label class="question-text" for="evaluation_date">Data da Avaliação:</label>
+                <input type="date" id="evaluation_date" name="evaluation_date" required>
+            </div>
+
+            <div class="question-container">
+                <label class="question-text" for="diagnosis_2">Diagnóstico:</label>
+                <textarea type="textarea" id="diagnosis_2" name="diagnosis_2" rows="3" required></textarea>
+            </div>
+
+            <div class="question-container">
+                <label class="question-text">Gravidade da Condição:</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="severity" value="eletivo" required> Eletivo</label>
+                    <label><input type="radio" name="severity" value="semi-eletivo"> Semi-eletivo - deveria ser realizado antes de 3 meses</label>
+                    <label><input type="radio" name="severity" value="urgencia-ambulatorial"> Urgência - Ambulatorial</label>
+                    <label><input type="radio" name="severity" value="urgencia-internado"> Urgência - Internado</label>
+                    <label><input type="radio" name="severity" value="emergencia"> Emergência - deveria ser imediato</label>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <label class="question-text">Cateterismo Cardíaco Solicitado:</label>
+                <div class="radio-group">
+                    <label><input type="radio" id="diagnostico" name="procedure_requested" value="Cateterismo diagnóstico"> Cateterismo Diagnóstico</label>
+                    <label><input type="radio" id="terapeutico" name="procedure_requested" value="Cateterismo terapêutico" > Cateterismo Terapêutico</label>
+                    <label><input type="radio" id="outro" name="procedure_requested" value="Outro" > Outro</label>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <label class="question-text">Procedimento Solicitado:</label>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="cia" name="procedures" value="fechamento CIA"> Fechamento CIA</label>
+                    <label><input type="checkbox" id="fop" name="procedures" value="fechamento FOP"> Fechamento FOP</label>
+                    <label><input type="checkbox" id="pca" name="procedures" value="fechamento PCA"> Fechamento PCA</label>
+                    <label><input type="checkbox" id="valvoplastia-pulmonar"  name="procedures" value="valvoplastia pulmonar"> Valvoplastia Pulmonar</label>
+                    <label><input type="checkbox" id="valvoplastia-aortica" name="procedures" value="valvoplastia aórtica"> Valvoplastia Aórtica</label>
+                    <label><input type="checkbox" id="aortoplastia" name="procedures" value="aortoplastia"> Aortoplastia</label>
+                    <label><input type="checkbox" id="angioplastia" name="procedures" value="angioplastia pulmonar"> Angioplastia Pulmonar</label>
+                    <label><input type="checkbox" id="diagnostico-proc" name="procedures" value="diagnóstico"> Diagnóstico</label>
+                    <label><input type="checkbox" id="stent" name="procedures" value="stent no canal"> Stent no Canal</label>
+                    <label><input type="checkbox" id="atriosseptostomia" name="procedures" value="atriosseptostomia"> Atriosseptostomia</label>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <label class="question-text" for="diagnosis">Quem solicitou o Cateterismo?</label>
+                <input type="text" id="requester" name="requester" required></textarea>
+            </div>
+
+            <div class="question-container">
+                <label class="question-text"> OPME Necessário?</label>
+                <div class="radio-group">
+                    <label><input type="radio" id="opme-sim" name="opme_needed" value="True"> Sim</label>
+                    <label><input type="radio" id="opme-nao" name="opme_needed" value="False"> Não</label>
+                </div>
+            </div>
+
+            <div class="question-container">
+                <label class="question-text"> Houve alguma complicação em procedimentos anteriores?</label>
+                <div class="radio-group">
+                    <label><input type="radio" id="complicacoes-sim" name="previous_complications" value="Sim"> Sim</label>
+                    <label><input type="radio" id="complicacoes-nao" name="previous_complications" value="Não"> Não</label>
+                </div>
+            </div>
+
+            <div class="save">
+                <button type="submit">Save</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
