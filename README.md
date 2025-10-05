@@ -1,4 +1,4 @@
-# CathPed - Sistema de Gestão de Pacientes 🩺
+# CathPed - Patient Management System 🩺
 
 ![Python](https://img.shields.io/badge/Python-3.9%2B-blue?style=for-the-badge&logo=python)
 ![Flask](https://img.shields.io/badge/Flask-3.x-black?style=for-the-badge&logo=flask)
@@ -6,95 +6,95 @@
 ![Google Cloud](https://img.shields.io/badge/Google_Cloud-API-4285F4?style=for-the-badge&logo=google-cloud)
 ![JavaScript](https://img.shields.io/badge/JavaScript-ES6-yellow?style=for-the-badge&logo=javascript)
 
-**CathPed** é uma aplicação web full-stack, desenvolvida como uma solução completa e individual, para otimizar o fluxo de gerenciamento de pacientes na área médica. O sistema automatiza a entrada de dados via **Google Forms/Sheets** e organiza todo o ciclo de vida do paciente em uma interface web intuitiva e segura.
+**CathPed** is a full-stack web application, developed as a complete, individual solution to optimize the patient management workflow in the medical field. The system automates data entry via **Google Forms/Sheets** and organizes the entire patient lifecycle in an intuitive and secure web interface.
 
 ***
 
-## 🎯 O Problema Resolvido
+## 🎯 The Problem It Solves
 
-Na rotina médica, o encaminhamento de pacientes entre especialistas frequentemente resulta em dados descentralizados, planilhas manuais e dificuldade no acompanhamento do status de cada caso. Este processo manual é propenso a erros, consome tempo valioso e dificulta a visão geral do fluxo de trabalho.
+In medical routines, referring patients between specialists often results in decentralized data, manual spreadsheets, and difficulty in tracking the status of each case. This manual process is prone to errors, consumes valuable time, and complicates the overall workflow overview.
 
-O **CathPed** foi criado para resolver exatamente esse problema, oferecendo uma plataforma centralizada que automatiza a coleta de dados e estrutura o atendimento em etapas claras, desde a avaliação inicial até o acompanhamento pós-procedimento.
-
-***
-
-## ✨ Features Principais
-
--   ✅ **Sincronização Automática com Google Sheets**: Novos pacientes preenchidos em um Google Form são automaticamente importados para a aplicação, servindo como a única fonte de verdade para novas entradas.
--   ✅ **Fluxo de Trabalho Estruturado**: O sistema guia o usuário através de 4 etapas essenciais do atendimento: **Avaliação**, **Autorização**, **Execução do Procedimento** e **Acompanhamento Pós-Procedimento**. A interface se adapta dinamicamente, mostrando apenas a próxima ação necessária para cada paciente.
--   ✅ **Operações CRUD Completas**:
-    -   **Create**: Novos pacientes são criados via API do Google Sheets.
-    -   **Read**: Visualização e busca de pacientes em uma lista organizada.
-    -   **Update**: O status do paciente é atualizado ao preencher os formulários de cada etapa.
-    -   **Delete**: A exclusão de um paciente é sincronizada, removendo o registro tanto do banco de dados **PostgreSQL** quanto da planilha original no **Google Sheets**, garantindo a consistência dos dados.
--   ✅ **Autenticação Segura**: Acesso restrito à aplicação através de um sistema de login e sessão.
--   ✅ **Resumo do Paciente e Geração de PDF**: Uma visão consolidada de todas as informações do paciente, que pode ser exportada como um arquivo PDF diretamente do navegador, utilizando `jsPDF` e `html2canvas`.
--   ✅ **Busca e Filtragem**: Funcionalidade de busca para localizar pacientes rapidamente pelo nome.
--   ✅ **Interface Responsiva**: O design se adapta a diferentes tamanhos de tela, permitindo o uso em desktops e dispositivos móveis.
+**CathPed** was created to solve this exact problem by offering a centralized platform that automates data collection and structures care into clear stages, from initial assessment to post-procedure follow-up.
 
 ***
 
-## 🏛️ Arquitetura e Fluxo de Dados
+## ✨ Key Features
 
-Este projeto foi concebido como uma solução end-to-end, onde fui responsável por todas as etapas, desde o design da arquitetura até a implementação do back-end e front-end.
+-   ✅ **Automatic Sync with Google Sheets**: New patients filled out in a Google Form are automatically imported into the application, serving as the single source of truth for new entries.
+-   ✅ **Structured Workflow**: The system guides the user through 4 essential care stages: **Assessment**, **Authorization**, **Procedure Execution**, and **Post-Procedure Follow-Up**. The interface dynamically adapts, showing only the next required action for each patient.
+-   ✅ **Full CRUD Operations**:
+    -   **Create**: New patients are created via the Google Sheets API.
+    -   **Read**: View and search for patients in an organized list.
+    -   **Update**: The patient's status is updated by filling out the forms for each stage.
+    -   **Delete**: Deleting a patient is synchronized, removing the record from both the **PostgreSQL** database and the original **Google Sheets** spreadsheet, ensuring data consistency.
+-   ✅ **Secure Authentication**: Restricted access to the application through a login and session system.
+-   ✅ **Patient Summary and PDF Generation**: A consolidated view of all patient information, which can be exported as a PDF file directly from the browser using `jsPDF` and `html2canvas`.
+-   ✅ **Search and Filtering**: Search functionality to quickly locate patients by name.
+-   ✅ **Responsive Interface**: The design adapts to different screen sizes, allowing for use on desktops and mobile devices.
 
-O fluxo de dados funciona da seguinte maneira:
+***
 
-1.  **Entrada de Dados**: Médicos parceiros preenchem um **Google Form** com os dados de um novo paciente.
-2.  **Armazenamento Inicial**: A resposta é salva automaticamente em uma planilha do **Google Sheets**.
-3.  **Sincronização com a Aplicação**: Ao acessar a lista de pacientes, a aplicação **Flask** utiliza a **API do Google Sheets** para buscar novas entradas.
-4.  **Persistência de Dados**: A aplicação verifica quais pacientes são novos e os salva no banco de dados **PostgreSQL** (hospedado na Neon), evitando duplicatas.
-5.  **Interação do Usuário**: O médico utiliza a interface web para gerenciar cada etapa do processo. Cada formulário preenchido na aplicação salva os dados em tabelas relacionais no banco de dados.
-6.  **Sincronização de Exclusão**: Se um paciente é excluído na aplicação, uma chamada de API é feita para remover a linha correspondente no Google Sheets, mantendo a integridade entre as plataformas.
+## 🏛️ Architecture and Data Flow
+
+This project was conceived as an end-to-end solution, where I was responsible for all stages, from architectural design to back-end and front-end implementation.
+
+The data flow works as follows:
+
+1.  **Data Entry**: Partner physicians fill out a **Google Form** with a new patient's data.
+2.  **Initial Storage**: The response is automatically saved to a **Google Sheets** spreadsheet.
+3.  **Application Sync**: When accessing the patient list, the **Flask** application uses the **Google Sheets API** to fetch new entries.
+4.  **Data Persistence**: The application checks for new patients and saves them to the **PostgreSQL** database (hosted on Neon), avoiding duplicates.
+5.  **User Interaction**: The physician uses the web interface to manage each stage of the process. Each form filled out in the application saves the data to relational tables in the database.
+6.  **Deletion Sync**: If a patient is deleted in the application, an API call is made to remove the corresponding row in Google Sheets, maintaining integrity across platforms.
 
 ***
 
 ## 🛠️ Tech Stack
 
-A escolha das tecnologias foi focada em robustez, escalabilidade e produtividade.
+The choice of technologies was focused on robustness, scalability, and productivity.
 
 -   **Back-end**:
-    -   **Python**: Linguagem principal da aplicação.
-    -   **Flask**: Micro-framework web para construir as rotas, a lógica de negócio e a API interna.
-    -   **SQLAlchemy**: ORM para mapeamento objeto-relacional e interação com o banco de dados de forma segura e eficiente.
-    -   **Google API Client Library for Python**: Para integração robusta com a API do Google Sheets.
+    -   **Python**: Main language for the application.
+    -   **Flask**: Web micro-framework to build routes, business logic, and the internal API.
+    -   **SQLAlchemy**: ORM for object-relational mapping and interacting with the database securely and efficiently.
+    -   **Google API Client Library for Python**: For robust integration with the Google Sheets API.
 
 -   **Front-end**:
-    -   **HTML5**: Estrutura semântica das páginas.
-    -   **CSS3**: Estilização customizada e responsividade (com Flexbox e Media Queries).
-    -   **JavaScript (Vanilla)**: Para interatividade no cliente, como o sistema de login assíncrono e a geração de PDF.
+    -   **HTML5**: Semantic structure of the pages.
+    -   **CSS3**: Custom styling and responsiveness (with Flexbox and Media Queries).
+    -   **JavaScript (Vanilla)**: For client-side interactivity, such as the asynchronous login system and PDF generation.
 
--   **Banco de Dados**:
-    -   **PostgreSQL (Neon)**: Banco de dados relacional serverless para armazenar de forma persistente e segura os dados dos pacientes e seus respectivos estágios.
+-   **Database**:
+    -   **PostgreSQL (Neon)**: Serverless relational database to securely and persistently store patient data and their respective stages.
 
--   **APIs e Bibliotecas**:
+-   **APIs and Libraries**:
     -   `Google Sheets API v4`
-    -   `jsPDF` & `html2canvas` para a funcionalidade de exportação.
+    -   `jsPDF` & `html2canvas` for the export functionality.
 
 ***
 
-## 🗃️ Estrutura do Banco de Dados
+## 🗃️ Database Structure
 
-O banco de dados foi modelado de forma relacional para garantir a integridade e a organização dos dados.
+The database was modeled relationally to ensure data integrity and organization.
 
--   **`FormResponse`**: Tabela central que armazena os dados iniciais do paciente importados do Google Sheets.
--   **Tabelas de Etapas**: `CaseEvaluation`, `Authorization`, `ProcedureExecution`, `FollowUp`.
-    -   Cada uma dessas tabelas possui um relacionamento **um-para-um** com a tabela `FormResponse`.
-    -   A configuração `cascade="all, delete-orphan"` garante que, ao deletar um paciente, todos os seus registros de etapas associados sejam automaticamente removidos, mantendo a consistência do banco.
+-   **`FormResponse`**: The central table that stores the initial patient data imported from Google Sheets.
+-   **Stage Tables**: `CaseEvaluation`, `Authorization`, `ProcedureExecution`, `FollowUp`.
+    -   Each of these tables has a **one-to-one** relationship with the `FormResponse` table.
+    -   The `cascade="all, delete-orphan"` configuration ensures that when a patient is deleted, all their associated stage records are automatically removed, maintaining database consistency.
 
 ***
 
-## 🚀 Como Executar Localmente
+## 🚀 How to Run Locally
 
-Siga os passos abaixo para configurar e executar o projeto em seu ambiente local.
+Follow the steps below to set up and run the project in your local environment.
 
-1.  **Clone o repositório:**
+1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/seu-usuario/cathped.git](https://github.com/seu-usuario/cathped.git)
+    git clone [https://github.com/your-username/cathped.git](https://github.com/your-username/cathped.git)
     cd cathped
     ```
 
-2.  **Crie e ative um ambiente virtual:**
+2.  **Create and activate a virtual environment:**
     ```bash
     python -m venv venv
     # Windows
@@ -103,34 +103,34 @@ Siga os passos abaixo para configurar e executar o projeto em seu ambiente local
     source venv/bin/activate
     ```
 
-3.  **Instale as dependências:**
+3.  **Install the dependencies:**
     ```bash
     pip install -r requirements.txt
     ```
 
-4.  **Configure as variáveis de ambiente:**
-    Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis:
+4.  **Configure the environment variables:**
+    Create a `.env` file in the project root and add the following variables:
 
     ```env
-    # Chave para a sessão do Flask (pode ser qualquer string aleatória)
-    secret_key='SUA_CHAVE_SECRETA_AQUI'
+    # Key for the Flask session (can be any random string)
+    secret_key='YOUR_SECRET_KEY_HERE'
 
-    # URI de conexão com seu banco de dados PostgreSQL
+    # Connection URI for your PostgreSQL database
     SQLALCHEMY_DATABASE_URI='postgresql://user:password@host:port/database'
 
-    # Credenciais de login da aplicação
-    APP_USERNAME='seu_usuario_de_login'
-    APP_PASSWORD='sua_senha_de_login'
+    # Application login credentials
+    APP_USERNAME='your_login_username'
+    APP_PASSWORD='your_login_password'
 
-    # Configurações da API do Google
-    SPREADSHEET_ID='ID_DA_SUA_PLANILHA_GOOGLE'
-    # Conteúdo completo do seu arquivo JSON de credenciais da conta de serviço, como uma string de linha única.
+    # Google API Settings
+    SPREADSHEET_ID='YOUR_GOOGLE_SPREADSHEET_ID'
+    # The full content of your service account credentials JSON file, as a single-line string.
     CREDENTIALS_FILE='{"type": "service_account", "project_id": "...", ...}'
     ```
-    > **Nota**: Para obter as `CREDENTIALS_FILE`, você precisa criar um projeto no Google Cloud Platform, ativar a API do Google Sheets e criar uma conta de serviço. Faça o download do arquivo JSON de credenciais e compartilhe sua planilha com o email da conta de serviço.
+    > **Note**: To get the `CREDENTIALS_FILE`, you need to create a project on the Google Cloud Platform, enable the Google Sheets API, and create a service account. Download the credentials JSON file and share your spreadsheet with the service account's email.
 
-5.  **Execute a aplicação:**
+5.  **Run the application:**
     ```bash
     flask run
     ```
-    Acesse `http://127.0.0.1:5000` em seu navegador.
+    Access `http://127.0.0.1:5000` in your browser.
